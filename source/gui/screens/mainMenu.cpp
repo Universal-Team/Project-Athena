@@ -37,7 +37,6 @@ void MainMenu::Draw(void) const
 	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
-	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.8f, Lang::title[0]))/2, 2, 0.8f, WHITE, Lang::title[0]);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 
 	Gui::ScreenDraw(bottom);
