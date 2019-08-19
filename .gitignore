@@ -1,0 +1,15 @@
+*.bin
+*.d
+*.o
+*.smdh
+*.elf
+*.cia
+*.3dsx
+*build
+*.map
+*.lst
+.vscode/ipch
+*.DS_Store
+
+bannertool*
+makerom*

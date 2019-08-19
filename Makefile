@@ -55,9 +55,9 @@ VERSION_MICRO := 1
 #---------------------------------------------------------------------------------
 TARGET		:=	Athena
 BUILD		:=	build
-SOURCES		:=	source source/core source/gui source/gui/screens source source/common
+SOURCES		:=	source source/core source/gui source/gui/screens source/common
 DATA		:=	data
-INCLUDES	:=	include include/core include/gui include/gui/screens include include/common
+INCLUDES	:=	include include/core include/gui include/gui/screens include/common
 GRAPHICS	:=	assets/gfx
 #GFXBUILD	:=	$(BUILD)
 ROMFS		:=	romfs
