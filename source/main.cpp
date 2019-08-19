@@ -41,7 +41,6 @@
 #include "common/structs.hpp"
 #include "gui/screens/screenCommon.hpp"
 #include "gui/keyboard.hpp"
-#include "common/settings.hpp"
 #include "gui/screens/mainMenu.hpp"
 
 // The classic Fade Effect! ;P
