@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
+//#include <time.h>
 #include <unistd.h>
 
 #include "gui/gui.hpp"
@@ -49,9 +49,6 @@ bool fadein = true;
 
 // If true -> Exit Athena.
 bool exiting = false;
-
-// Current Game... If true -> use the Gamecard, If false -> use installed Title.
-bool Gamecard = false;
 
 // Touch Touch!
 touchPosition touch;
@@ -74,7 +71,6 @@ int main() {
 	amInit();
 	sdmcInit();
 	cfguInit();
-	//Config::loadConfig();
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
 
 	// make folders if they don't exist
