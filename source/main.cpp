@@ -1,5 +1,5 @@
 /*
-*   This file is part of LeafEdit
+*   This file is part of LeafEdit/Project-Athena
 *   Copyright (C) 2019 VoltZ, Epicpkmn11, Flame, RocketRobz, TotallyNotGuy
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -75,7 +75,7 @@ int main() {
 	amInit();
 	sdmcInit();
 	cfguInit();
-	Config::loadConfig();
+	//Config::loadConfig();
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
 
 	// make folders if they don't exist
