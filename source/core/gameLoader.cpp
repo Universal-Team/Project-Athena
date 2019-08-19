@@ -1,5 +1,5 @@
 /*
-*   This file is part of Project-Athena
+*   This file is part of LeafEdit/Project-Athena
 *   Copyright (C) 2019 VoltZ, Epicpkmn11, Flame, RocketRobz, TotallyNotGuy
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,5 @@
 
 #include "core/gameLoader.hpp"
 
-void GameLoader::scanTitleID(void)
-{
+void GameLoader::scanTitleID(void) {
 }
