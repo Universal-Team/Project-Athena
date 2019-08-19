@@ -51,6 +51,6 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
 		exiting = true;
 	} else if (hDown & KEY_Y) {
-		Gui::setScreen(std::make_unique<TownManager>());
+		//Gui::setScreen(std::make_unique<TownManager>());
 	}
 }
