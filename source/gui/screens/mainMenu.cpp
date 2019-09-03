@@ -33,23 +33,57 @@ extern bool fadein;
 
 void MainMenu::Draw(void) const
 {
+	// Top Bars.
 	Gui::ScreenDraw(top);
-	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
-	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
-	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
+	Gui::Draw_Rect(0, 0, 400, 30, Chartreuse);
+	Gui::Draw_Rect(0, 30, 400, 180, Mocha);
+	Gui::Draw_Rect(0, 210, 400, 30, Chartreuse);
+
+
+	// First Row.
+	Gui::Draw_Rect(80, 35, 240, 50, Pool);
+	Gui::Draw_Rect(0, 35, 40, 50, Pool);
+	Gui::Draw_Rect(360, 35, 40, 50, Pool);
+
+	// Second Row.
+	Gui::Draw_Rect(80, 95, 240, 50, Pool);
+	Gui::Draw_Rect(0, 95, 40, 50, Pool);
+	Gui::Draw_Rect(360, 95, 40, 50, Pool);
+
+	// Third Row.
+	Gui::Draw_Rect(80, 155, 240, 50, Pool);
+	Gui::Draw_Rect(0, 155, 40, 50, Pool);
+	Gui::Draw_Rect(360, 155, 40, 50, Pool);
+
+	// Icon & Metainfo like App name and Author.
+	Gui::sprite(sprites_icon_idx, 85, 36);
+	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, "Athena"))/2-120+50+95, 40, 0.5f, BLACK, "Athena");
+	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, "Universal-Team"))/2-120+50+95, 60, 0.5f, BLACK, "Universal-Team");
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 
+	// Test animated Selector.
+	Gui::drawAnimatedSelector(80, 35, 240, 50, .030, C2D_Color32(0, 0, 0, 0));
+
+	// Bottom Bars.
 	Gui::ScreenDraw(bottom);
-	Gui::Draw_Rect(0, 0, 320, 30, GREEN);
-	Gui::Draw_Rect(0, 30, 320, 180, DARKGRAY);
-	Gui::Draw_Rect(0, 210, 320, 30, GREEN);
+	Gui::Draw_Rect(0, 0, 320, 30, Chartreuse);
+	Gui::Draw_Rect(0, 30, 320, 180, Mocha);
+	Gui::Draw_Rect(0, 210, 320, 30, Chartreuse);
+
+	// Bottom Text Boxes.
+    Gui::Draw_Rect(0, 100, 320, 30, Pool);
+    Gui::Draw_Rect(0, 140, 320, 30, Pool);
+
+	// Path and Description and the Icon as well.
+	Gui::sprite(sprites_icon_idx, 245, 42);
+	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
+	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Project-Athena"))/2, 147, 0.50f, BLACK, "Project-Athena");
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
 		exiting = true;
-	} else if (hDown & KEY_Y) {
-		//Gui::setScreen(std::make_unique<TownManager>());
 	}
 }

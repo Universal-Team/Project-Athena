@@ -44,5 +44,11 @@
 
 #define DIM C2D_Color32(0, 0, 0, 190)
 
+// GUI Colors.
+#define Pool C2D_Color32(174, 220, 218, 255)
+#define Mocha C2D_Color32(94, 51, 0, 255)
+#define Chartreuse C2D_Color32(175, 159, 1, 255)
+#define Teal C2D_Color32(0, 146, 161, 255)
+
 typedef u32 Color;
 #endif

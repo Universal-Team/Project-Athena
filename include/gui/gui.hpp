@@ -88,6 +88,15 @@ namespace Gui
     void Draw_GetStringSize(float size, float *width, float *height, std::string Text);
     float Draw_GetStringWidth(float size, std::string Text);
     float Draw_GetStringHeight(float size, std::string Text);
+
+
+    // float xPos -> X Position of the Selector.
+    // float yPos -> Y Position of the Selector.
+    // float Width -> The Width of the Selector.
+    // float Height -> The Height of the Selector.
+    // float speed -> The speed of the Animation. For example : ".030f/.030".
+    // u32 colour -> The color Value for the Selector. example : C2D_Color32(0, 0, 0, 0) for Transparency.
+    void drawAnimatedSelector(float xPos, float yPos, float Width, float Height, float speed, u32 colour);
 }
 
 #endif
