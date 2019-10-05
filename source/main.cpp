@@ -34,14 +34,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-//#include <time.h>
 #include <unistd.h>
 
 #include "gui/gui.hpp"
+
 #include "common/structs.hpp"
+
 #include "gui/screens/screenCommon.hpp"
+
 #include "gui/keyboard.hpp"
+
 #include "gui/screens/mainMenu.hpp"
+
+#include "gameLoader.hpp"
 
 // The classic Fade Effect! ;P
 int fadealpha = 255;
@@ -65,7 +70,7 @@ bool touching(touchPosition touch, Structs::ButtonPos button) {
 int main() {
 	// Initialize Everything.
 	romfsInit();
-    	gfxInitDefault();
+	gfxInitDefault();
 	Gui::init();
 	acInit();
 	amInit();
@@ -77,6 +82,9 @@ int main() {
 	mkdir("sdmc:/3ds", 0777);	// For DSP dump
 	mkdir("sdmc:/Athena", 0777);	// main Path.
 
+	// Scan for available Titles to display.
+	GameLoader::scanTitleID();
+	
 	// Set the Screen to the MainMenu.
 	Gui::setScreen(std::make_unique<MainMenu>());
 	

@@ -26,5 +26,52 @@
 
 #include "core/gameLoader.hpp"
 
-void GameLoader::scanTitleID(void) {
+#include "gui/gui.hpp"
+
+#include <array>
+
+// Define the scanned Title ID's.
+static constexpr std::array<unsigned long long, 1> titleIds = {
+    0x0004000004394100 // Universal-Manager.
+};
+
+// Scan the defined Title ID's from above.
+void GameLoader::scanTitleID(void)
+{
+    Result res = 0;
+    u32 count  = 0;
+
+    // clear title list if filled previously
+    installedTitles.clear();
+
+    res = AM_GetTitleCount(MEDIATYPE_SD, &count);
+    if (R_FAILED(res))
+    {
+        return;
+    }
+
+    // get title list and check if a title matches the ids we want
+    std::vector<u64> ids(count);
+    u64* p = ids.data();
+    res    = AM_GetTitleList(NULL, MEDIATYPE_SD, count, p);
+    if (R_FAILED(res))
+    {
+        return;
+    }
+
+    for (size_t i = 0; i < titleIds.size(); i++)
+    {
+        u64 id = titleIds.at(i);
+        if (std::find(ids.begin(), ids.end(), id) != ids.end())
+        {
+            auto title = std::make_shared<TitleLoader>();
+            if (title->load(id, MEDIATYPE_SD))
+            {
+                installedTitles.push_back(title);
+            }
+        }
+    }
+
+    // sort the list alphabetically
+    std::sort(installedTitles.begin(), installedTitles.end(), [](std::shared_ptr<TitleLoader>& l, std::shared_ptr<TitleLoader>& r) { return l->ID() < r->ID(); });
 }

@@ -27,11 +27,15 @@
 #ifndef GAMELOADER_HPP
 #define GAMELOADER_HPP
 
+#include "common/titleLoader.hpp"
+
 #include <3ds.h>
+#include <memory>
 
 namespace GameLoader
 {
     void scanTitleID(void);
+    inline std::vector<std::shared_ptr<TitleLoader>> installedTitles;
 };
 
 #endif

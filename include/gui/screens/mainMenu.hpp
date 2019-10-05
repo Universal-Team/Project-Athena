@@ -35,6 +35,7 @@ public:
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 
 private:
+	void DrawTitle(void) const;
 };
 
 #endif

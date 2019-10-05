@@ -24,6 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "core/gameLoader.hpp"
+
 #include "gui/screens/screenCommon.hpp"
 #include "gui/screens/mainMenu.hpp"
 
@@ -64,6 +66,7 @@ void MainMenu::Draw(void) const
 	// Test animated Selector.
 	Gui::drawAnimatedSelector(80, 35, 240, 50, .030, C2D_Color32(0, 0, 0, 0));
 
+	DrawTitle();
 	// Bottom Bars.
 	Gui::ScreenDraw(bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, Chartreuse);
@@ -81,6 +84,13 @@ void MainMenu::Draw(void) const
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
+
+void MainMenu::DrawTitle(void) const {
+	C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 85, 96, 0.5f); // 48x48.
+	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[0]->name());
+	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[0]->Author());
+}
+
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
