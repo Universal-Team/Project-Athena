@@ -98,5 +98,14 @@ void MainMenu::DrawDescription(void) const {
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
 		exiting = true;
+	} else if (hDown & KEY_A) {
+		if (!GameLoader::installedTitles.empty()) {
+			u8 param[0x300];
+			u8 hmac[0x20];
+			memset(param, 0, sizeof(param));
+			memset(hmac, 0, sizeof(hmac));
+			APT_PrepareToDoApplicationJump(0, GameLoader::installedTitles[0]->ID(), MEDIATYPE_SD);
+			APT_DoApplicationJump(param, sizeof(param), hmac);
+		}
 	}
 }

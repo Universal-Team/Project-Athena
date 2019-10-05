@@ -61,6 +61,11 @@ u32 TitleLoader::lowId(void)
     return (u32)mId;
 }
 
+u64 TitleLoader::ID(void)
+{
+    return (u64)highId() << 32 | lowId();
+}
+
 FS_MediaType TitleLoader::mediaType(void)
 {
     return mMedia;

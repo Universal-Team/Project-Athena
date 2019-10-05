@@ -17,7 +17,7 @@ public:
     bool load(u64 id, FS_MediaType mediaType);
     u32 highId(void);
     u32 lowId(void);
-    u64 ID(void) { return (u64)highId() << 32 | lowId(); }
+    u64 ID(void);
     FS_MediaType mediaType(void);
     std::string name(void);
     std::string Author(void);
