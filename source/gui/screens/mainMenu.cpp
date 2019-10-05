@@ -78,10 +78,14 @@ void MainMenu::Draw(void) const
     Gui::Draw_Rect(0, 140, 320, 30, Pool);
 
 	// Path and Description and the Icon as well.
-	C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 245, 42, 0.5f); // Installed Title Icon.
+	if (!GameLoader::installedTitles.empty()) {
+		C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 245, 42, 0.5f); // Installed Title Icon.
+	}
 	//Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
 
-	DrawDescription();
+	if (!GameLoader::installedTitles.empty()) {
+		DrawDescription();
+	}
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
 
