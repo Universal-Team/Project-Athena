@@ -64,9 +64,9 @@ void MainMenu::Draw(void) const
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 
 	// Test animated Selector.
-	Gui::drawAnimatedSelector(80, 35, 240, 50, .030, C2D_Color32(0, 0, 0, 0));
-
+	Gui::drawAnimatedSelector(80, 95, 240, 50, .030, C2D_Color32(0, 0, 0, 0)); // Row 2 -> Installed Title.
 	DrawTitle();
+
 	// Bottom Bars.
 	Gui::ScreenDraw(bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, Chartreuse);
@@ -78,10 +78,10 @@ void MainMenu::Draw(void) const
     Gui::Draw_Rect(0, 140, 320, 30, Pool);
 
 	// Path and Description and the Icon as well.
-	Gui::sprite(sprites_icon_idx, 245, 42);
-	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
-	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Project-Athena"))/2, 147, 0.50f, BLACK, "Project-Athena");
+	C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 245, 42, 0.5f); // Installed Title Icon.
+	//Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
 
+	DrawDescription();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
 
@@ -91,6 +91,9 @@ void MainMenu::DrawTitle(void) const {
 	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[0]->Author());
 }
 
+void MainMenu::DrawDescription(void) const {
+	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[0]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[0]->longDescription());
+}
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {

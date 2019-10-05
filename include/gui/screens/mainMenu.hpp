@@ -36,6 +36,7 @@ public:
 
 private:
 	void DrawTitle(void) const;
+	void DrawDescription(void) const;
 };
 
 #endif

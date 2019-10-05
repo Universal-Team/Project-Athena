@@ -42,7 +42,8 @@ bool TitleLoader::load(u64 id, FS_MediaType media)
         }
 
         mName   = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].shortDescription);
-        mAuthor = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].publisher);
+        mAuthor = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].publisher); 
+        mLongDescription = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].longDescription);
         loadTitle = true;
         mIcon     = loadTextureIcon(smdh);
         delete smdh;
@@ -81,4 +82,9 @@ std::string TitleLoader::name(void)
 std::string TitleLoader::Author(void)
 {
     return mAuthor;
+}
+
+std::string TitleLoader::longDescription(void)
+{
+    return mLongDescription;
 }
