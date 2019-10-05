@@ -86,13 +86,17 @@ void MainMenu::Draw(void) const
 }
 
 void MainMenu::DrawTitle(void) const {
-	C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 85, 96, 0.5f); // 48x48.
-	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[0]->name());
-	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[0]->Author());
+	if (!GameLoader::installedTitles.empty()) {
+		C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 85, 96, 0.5f); // 48x48.
+		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[0]->name());
+		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[0]->Author());
+	}
 }
 
 void MainMenu::DrawDescription(void) const {
-	Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[0]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[0]->longDescription());
+	if (!GameLoader::installedTitles.empty()) {
+		Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[0]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[0]->longDescription());
+	}
 }
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {

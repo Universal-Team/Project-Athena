@@ -27,7 +27,7 @@
 #ifndef GAMELOADER_HPP
 #define GAMELOADER_HPP
 
-#include "common/titleLoader.hpp"
+#include "core/titleLoader.hpp"
 
 #include <3ds.h>
 #include <memory>

@@ -1,5 +1,6 @@
-#include "common/titleLoader.hpp"
 #include "common/utils.hpp"
+
+#include "core/titleLoader.hpp"
 
 // Properly free the Icon.
 
