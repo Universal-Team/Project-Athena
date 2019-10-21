@@ -23,12 +23,15 @@ public:
     std::string Author(void);
     std::string longDescription(void);
     C2D_Image icon(void);
+    char *productCode(void);
+    char _productCode[16];
 
 private:
     u64 mId;
     FS_MediaType mMedia;
     FS_CardType mCard;
     C2D_Image mIcon;
+    char *mProductCode;
     std::string mName;
     std::string mAuthor;
     std::string mLongDescription;

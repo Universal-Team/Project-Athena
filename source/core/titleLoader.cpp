@@ -42,6 +42,8 @@ bool TitleLoader::load(u64 id, FS_MediaType media)
 		return false;
 	}
 
+	AM_GetTitleProductCode(mMedia, mId, _productCode);
+	mProductCode = _productCode;
 	mName   = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].shortDescription);
 	mAuthor = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].publisher);
 	mLongDescription = StringUtils::UTF16toUTF8((char16_t*)smdh->applicationTitles[1].longDescription);
@@ -93,4 +95,9 @@ std::string TitleLoader::Author(void)
 std::string TitleLoader::longDescription(void)
 {
 	return mLongDescription;
+}
+
+char *TitleLoader::productCode(void)
+{
+	return mProductCode;
 }

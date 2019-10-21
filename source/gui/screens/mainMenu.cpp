@@ -24,6 +24,8 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "common/utils.hpp"
+
 #include "core/gameLoader.hpp"
 
 #include "gui/screens/screenCommon.hpp"
@@ -92,6 +94,14 @@ void MainMenu::Draw(void) const
 
 	if (!GameLoader::installedTitles.empty()) {
 		DrawDescription();
+		if (mode == 2) {
+			std::string IDAndCode = "ID: ";
+			IDAndCode += StringUtils::format("%08X", titleFromIndex(selectedTitle)->lowId());
+			IDAndCode += ", Prod Code: ";
+			IDAndCode += titleFromIndex(selectedTitle)->productCode();
+			Gui::Draw_Rect(0, 175, 320, 30, Pool);
+			Gui::DrawString((320-Gui::GetStringWidth(0.6f, IDAndCode.c_str()))/2, 180, 0.6f, BLACK, IDAndCode.c_str(), 320);
+		}
 	}
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 }
@@ -121,7 +131,7 @@ void MainMenu::DrawTitle(void) const {
 
 void MainMenu::DrawDescription(void) const {
 	if (!GameLoader::installedTitles.empty()) {
-		Gui::DrawString((320-Gui::GetStringWidth(0.50f, GameLoader::installedTitles[selectedTitle]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[selectedTitle]->longDescription());
+		Gui::DrawString((320-Gui::GetStringWidth(0.6f, GameLoader::installedTitles[selectedTitle]->longDescription()))/2, 145, 0.6f, BLACK, GameLoader::installedTitles[selectedTitle]->longDescription(), 320);
 	}
 }
 
