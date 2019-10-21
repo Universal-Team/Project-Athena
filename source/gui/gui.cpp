@@ -24,13 +24,17 @@
 *         reasonable ways as different from the original version.
 */
 
-#include <3ds.h>
+
 #include "gui/gui.hpp"
+
 #include "gui/screens/screenCommon.hpp"
+
+#include <3ds.h>
 #include <assert.h>
+#include <stack>
 #include <stdarg.h>
 #include <unistd.h>
-#include <stack>
+
 
 C3D_RenderTarget* top;
 C3D_RenderTarget* bottom;
@@ -39,7 +43,7 @@ static C2D_SpriteSheet sprites;
 
 C2D_TextBuf sizeBuf;
 C2D_Font systemFont;
-std::stack<std::unique_ptr<SCREEN>> screens;
+std::stack<std::unique_ptr<Screen>> screens;
 
 // Clear Text.
 void Gui::clearTextBufs(void)
@@ -75,10 +79,7 @@ Result Gui::init(void)
 // Exit GUI.
 void Gui::exit(void)
 {
-	if (sprites)
-	{
-		C2D_SpriteSheetFree(sprites);
-	}
+	C2D_SpriteSheetFree(sprites);
 	C2D_TextBufDelete(sizeBuf);
 	C2D_Fini();
 	C3D_Fini();
@@ -87,15 +88,7 @@ void Gui::exit(void)
 // Draw a normal Sprite from the Spritesheet.
 void Gui::sprite(int key, int x, int y)
 {
-	if (key == sprites_res_null_idx)
-	{
-		return;
-	}
-	// standard case
-	else
-	{
-		C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f);
-	}
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f);
 }
 
 void Gui::displayMsg(std::string Text) {
@@ -246,7 +239,7 @@ void Gui::mainLoop(u32 hDown, u32 hHeld, touchPosition touch) {
 }
 
 // Set the current Screen.
-void Gui::setScreen(std::unique_ptr<SCREEN> screen)
+void Gui::setScreen(std::unique_ptr<Screen> screen)
 {
 	screens.push(std::move(screen));
 }

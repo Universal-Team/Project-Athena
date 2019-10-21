@@ -23,6 +23,7 @@
 *         or requiring that modified versions of such material be marked in
 *         reasonable ways as different from the original version.
 */
+
 #ifndef MAINMENU_HPP
 #define MAINMENU_HPP
 
@@ -30,7 +31,7 @@
 
 #include "gui/screens/screen.hpp"
 
-class MainMenu : public SCREEN 
+class MainMenu : public Screen 
 {
 public:
 	void Draw(void) const override;

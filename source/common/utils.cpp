@@ -3,8 +3,6 @@
 #include <memory>
 #include <string>
 
-// StringUtils.
-
 std::u16string StringUtils::UTF8toUTF16(const char* src)
 {
 	char16_t tmp[256] = {0};

@@ -34,8 +34,8 @@
 
 namespace GameLoader
 {
-    void scanTitleID(void);
-    inline std::vector<std::shared_ptr<TitleLoader>> installedTitles;
+	void scanTitleID(void);
+	inline std::vector<std::shared_ptr<TitleLoader>> installedTitles;
 };
 
 #endif

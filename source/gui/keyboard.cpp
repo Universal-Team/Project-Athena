@@ -1,9 +1,11 @@
+#include "common/structs.hpp"
+
 #include "gui/gui.hpp"
 #include "gui/keyboard.hpp"
+
+#include <ctype.h>
 #include <string>
 #include <stdio.h>
-#include <ctype.h>
-#include "common/structs.hpp"
 
 extern C3D_RenderTarget* top;
 extern C3D_RenderTarget* bottom;
@@ -26,22 +28,22 @@ Structs::Key keysQWERTYShift[] = {
 };
 
 Structs::Key space[] = {
-	{" ",     85, 90},	// Space
+	{" ",	85, 90},	// Space
 };
 
 Structs::Key rightShift[] = {
-	{"rsft",     285, 67},	// Right Shift
+	{"rsft",	285, 67},	// Right Shift
 };
 
 Structs::Key leftShift[] = {
-	{"lsft",     0, 67},	// Left Shift
+	{"lsft",	0, 67},	// Left Shift
 };
 
 Structs::Key misc[] = {
-	{"bksp",     300, 0},	// Backspace
-	{"caps",     0, 45},	// Caps Lock
-	{"entr",     300, 45},	// Enter
-	{"	",     60, 90},	// Tab
+	{"bksp",	300, 0},	// Backspace
+	{"caps",	0, 45},	// Caps Lock
+	{"entr",	300, 45},	// Enter
+	{"	",		60, 90},	// Tab
 };
 
 void Input::drawKeyboard()
@@ -83,8 +85,8 @@ std::string Input::getLine(uint maxLength, std::string Text) {
 			C3D_FrameEnd(0);
 			Gui::clearTextBufs();
 			C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-        	C2D_TargetClear(top, BLACK);
-        	C2D_TargetClear(bottom, BLACK);
+			C2D_TargetClear(top, BLACK);
+			C2D_TargetClear(bottom, BLACK);
 			Gui::ScreenDraw(top);
 			Gui::Draw_Rect(0, 0, 400, 30, GREEN);
 			Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);

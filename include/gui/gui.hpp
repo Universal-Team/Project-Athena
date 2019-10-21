@@ -27,6 +27,12 @@
 #ifndef GUI_HPP
 #define GUI_HPP
 
+#include "sprites.h"
+
+#include "gui/colors.hpp"
+
+#include "gui/screens/screen.hpp"
+
 #include <3ds.h>
 #include <citro2d.h>
 #include <citro3d.h>
@@ -35,16 +41,6 @@
 #include <string.h>
 #include <unordered_map>
 #include <wchar.h>
-
-// Spritesheet.
-#include "sprites.h"
-
-// Misc.
-#include "gui/colors.hpp"
-#include "gui/screens/screen.hpp"
-
-// emulated
-#define sprites_res_null_idx 500
 
 #define FONT_SIZE_18 0.72f
 #define FONT_SIZE_17 0.7f
@@ -56,48 +52,48 @@
 
 namespace Gui
 {
-    // Init and Exit of the GUI.
-    Result init(void);
-    void exit(void);
+	// Init and Exit of the GUI.
+	Result init(void);
+	void exit(void);
 
-    // Screen and MainLoops.
+	// Screen and MainLoops.
 	void mainLoop(u32 hDown, u32 hHeld, touchPosition touch);
-	void setScreen(std::unique_ptr<SCREEN> screen);
+	void setScreen(std::unique_ptr<Screen> screen);
 	void screenBack(void);
-    C3D_RenderTarget* target(gfxScreen_t t);
-    void ScreenDraw(C3D_RenderTarget * screen);
+	C3D_RenderTarget* target(gfxScreen_t t);
+	void ScreenDraw(C3D_RenderTarget * screen);
 
-    // Clear Text.
-    void clearTextBufs(void);
-    
-    // Sprite Drawing.
-    void sprite(int key, int x, int y);
-    void Draw_ImageBlend(int key, int x, int y, u32 color);
+	// Clear Text.
+	void clearTextBufs(void);
 
-    // Misc.
-    bool Draw_Rect(float x, float y, float w, float h, u32 color);
+	// Sprite Drawing.
+	void sprite(int key, int x, int y);
+	void Draw_ImageBlend(int key, int x, int y, u32 color);
 
-    // Display Misc Messages.
-    void DisplayWarnMsg(std::string Text);
-    bool promptMsg2(std::string promptMsg);
-    void DisplayWaitMsg(std::string waitMsg, ...);
-    bool promptMsg(std::string msg);
-    void displayMsg(std::string Text);
+	// Misc.
+	bool Draw_Rect(float x, float y, float w, float h, u32 color);
 
-    // Text / String Functions.
-    void DrawString(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);
-    void GetStringSize(float size, float *width, float *height, std::string Text);
-    float GetStringWidth(float size, std::string Text);
-    float GetStringHeight(float size, std::string Text);
+	// Display Misc Messages.
+	void DisplayWarnMsg(std::string Text);
+	bool promptMsg2(std::string promptMsg);
+	void DisplayWaitMsg(std::string waitMsg, ...);
+	bool promptMsg(std::string msg);
+	void displayMsg(std::string Text);
+
+	// Text / String Functions.
+	void DrawString(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);
+	void GetStringSize(float size, float *width, float *height, std::string Text);
+	float GetStringWidth(float size, std::string Text);
+	float GetStringHeight(float size, std::string Text);
 
 
-    // float xPos -> X Position of the Selector.
-    // float yPos -> Y Position of the Selector.
-    // float Width -> The Width of the Selector.
-    // float Height -> The Height of the Selector.
-    // float speed -> The speed of the Animation. For example : ".030f/.030".
-    // u32 colour -> The color Value for the Selector. example : C2D_Color32(0, 0, 0, 0) for Transparency.
-    void drawAnimatedSelector(float xPos, float yPos, float Width, float Height, float speed, u32 colour);
+	// float xPos -> X Position of the Selector.
+	// float yPos -> Y Position of the Selector.
+	// float Width -> The Width of the Selector.
+	// float Height -> The Height of the Selector.
+	// float speed -> The speed of the Animation. For example : ".030f/.030".
+	// u32 colour -> The color Value for the Selector. example : C2D_Color32(0, 0, 0, 0) for Transparency.
+	void drawAnimatedSelector(float xPos, float yPos, float Width, float Height, float speed, u32 colour);
 }
 
 #endif

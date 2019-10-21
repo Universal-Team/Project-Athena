@@ -31,8 +31,6 @@
 #include "gui/screens/screenCommon.hpp"
 #include "gui/screens/mainMenu.hpp"
 
-#include <vector>
-
 extern bool exiting;
 extern int fadealpha;
 extern bool fadein;
