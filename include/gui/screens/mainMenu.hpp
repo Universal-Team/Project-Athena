@@ -26,6 +26,8 @@
 #ifndef MAINMENU_HPP
 #define MAINMENU_HPP
 
+#include "core/gameLoader.hpp"
+
 #include "gui/screens/screen.hpp"
 
 class MainMenu : public SCREEN 
@@ -35,8 +37,25 @@ public:
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
 
 private:
+	int selectedTitle = 0;
+	bool GameSelected   = false;
+
 	void DrawTitle(void) const;
 	void DrawDescription(void) const;
+	void SelectionLogic(u32 hDown);
+
+	std::shared_ptr<TitleLoader> titleFromIndex(int i) const
+	{
+		if (i == -2)
+		{
+			return nullptr;
+		}
+		else if ((size_t)i < GameLoader::installedTitles.size())
+		{
+			return GameLoader::installedTitles[i];
+		}
+		return nullptr;
+	}
 };
 
 #endif

@@ -79,7 +79,7 @@ void MainMenu::Draw(void) const
 
 	// Path and Description and the Icon as well.
 	if (!GameLoader::installedTitles.empty()) {
-		C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 245, 42, 0.5f); // Installed Title Icon.
+		C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle]->icon(), 245, 42, 0.5f); // Installed Title Icon.
 	}
 	//Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
 
@@ -91,19 +91,21 @@ void MainMenu::Draw(void) const
 
 void MainMenu::DrawTitle(void) const {
 	if (!GameLoader::installedTitles.empty()) {
-		C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 85, 96, 0.5f); // 48x48.
-		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[0]->name());
-		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[0]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[0]->Author());
+		C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle]->icon(), 85, 96, 0.5f); // 48x48.
+		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->name());
+		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->Author());
 	}
 }
 
 void MainMenu::DrawDescription(void) const {
 	if (!GameLoader::installedTitles.empty()) {
-		Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[0]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[0]->longDescription());
+		Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[selectedTitle]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[selectedTitle]->longDescription());
 	}
 }
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	SelectionLogic(hDown);
+
 	if (hDown & KEY_START) {
 		exiting = true;
 	} else if (hDown & KEY_A) {
@@ -112,8 +114,66 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			u8 hmac[0x20];
 			memset(param, 0, sizeof(param));
 			memset(hmac, 0, sizeof(hmac));
-			APT_PrepareToDoApplicationJump(0, GameLoader::installedTitles[0]->ID(), MEDIATYPE_SD);
+			APT_PrepareToDoApplicationJump(0, GameLoader::installedTitles[selectedTitle]->ID(), MEDIATYPE_SD);
 			APT_DoApplicationJump(param, sizeof(param), hmac);
+		}
+	}
+}
+
+void MainMenu::SelectionLogic(u32 hDown) {
+	if (selectedTitle == -2)
+	{
+		if (!GameLoader::installedTitles.empty())
+		{
+			selectedTitle = 0;
+		}
+	}
+
+	// Scroll with D-Pad Right to the next available Title.
+	else if (hDown & KEY_RIGHT)
+	{
+		if (selectedTitle == (int)GameLoader::installedTitles.size() - 1 || selectedTitle == 7)
+		{
+			if (GameLoader::installedTitles.size() > 8 && selectedTitle > 7)
+			{
+				if (selectedTitle > 7)
+				{
+					selectedTitle = 8;
+				}
+				else if (selectedTitle == 7)
+				{
+					selectedTitle = 0;
+				}
+			}
+			else
+			{
+				selectedTitle = 0;
+			}
+		}
+		else
+		{
+			selectedTitle++;
+		}
+	}
+
+	// Scroll with D-Pad Left to the next available Title.
+	else if (hDown & KEY_LEFT)
+	{
+		if (selectedTitle == -1)
+		{
+			selectedTitle = GameLoader::installedTitles.size() < 8 ? GameLoader::installedTitles.size() - 1 : 7;
+		}
+		else if (selectedTitle == 8)
+		{
+			selectedTitle = (int)GameLoader::installedTitles.size() - 1;
+		}
+		else if (selectedTitle == 0)
+		{
+			selectedTitle = GameLoader::installedTitles.size() > 8 ? 7 : (int)GameLoader::installedTitles.size() - 1;
+		}
+		else
+		{
+			selectedTitle--;
 		}
 	}
 }
