@@ -24,19 +24,48 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "common/common.hpp"
-
 #include "core/gameLoader.hpp"
 
 #include "gui/gui.hpp"
 
 #include <array>
 
-// Define the scanned Title ID's.
-static constexpr std::array<unsigned long long, 2> titleIds = {
-	UNIVERSAL_MANAGER,
-	LEAFEDIT
-};
+// Exclude invalid Title IDs.
+static bool isValidId(u64 id)
+{
+	// check for invalid titles.
+	switch ((u32)id) {
+		// Instruction Manual
+		case 0x00008602:
+		case 0x00009202:
+		case 0x00009B02:
+		case 0x0000A402:
+		case 0x0000AC02:
+		case 0x0000B402:
+		// Internet Browser
+		case 0x00008802:
+		case 0x00009402:
+		case 0x00009D02:
+		case 0x0000A602:
+		case 0x0000AE02:
+		case 0x0000B602:
+		case 0x20008802:
+		case 0x20009402:
+		case 0x20009D02:
+		case 0x2000AE02:
+		// Garbage
+		case 0x00021A00:
+			return false;
+	}
+
+	// check for updates
+	u32 high = id >> 32;
+	if (high == 0x0004000E) {
+		return false;
+	}
+
+	return true;
+}
 
 // Scan the defined Title ID's from above.
 void GameLoader::scanTitleID(void)
@@ -62,13 +91,11 @@ void GameLoader::scanTitleID(void)
 		return;
 	}
 
-	for (size_t i = 0; i < titleIds.size(); i++)
-	{
-		u64 id = titleIds.at(i);
-		if (std::find(ids.begin(), ids.end(), id) != ids.end())
+	for (u32 i = 0; i < count; i++) {
+		if (isValidId(ids[i]))
 		{
 			auto title = std::make_shared<TitleLoader>();
-			if (title->load(id, MEDIATYPE_SD))
+			if (title->load(ids[i], MEDIATYPE_SD))
 			{
 				installedTitles.push_back(title);
 			}

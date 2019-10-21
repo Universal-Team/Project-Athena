@@ -44,80 +44,98 @@ std::stack<std::unique_ptr<SCREEN>> screens;
 // Clear Text.
 void Gui::clearTextBufs(void)
 {
-    C2D_TextBufClear(sizeBuf);
+	C2D_TextBufClear(sizeBuf);
 }
 
 // Draw a blended Image. (Maybe useful for later?)
 void Gui::Draw_ImageBlend(int key, int x, int y, u32 color)
 {
-    C2D_ImageTint tint;
-    C2D_SetImageTint(&tint, C2D_TopLeft, color, 0.5);
-    C2D_SetImageTint(&tint, C2D_TopRight, color, 0.5);
-    C2D_SetImageTint(&tint, C2D_BotLeft, color, 0.5);
-    C2D_SetImageTint(&tint, C2D_BotRight, color, 0.5);
-    C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f, &tint);
+	C2D_ImageTint tint;
+	C2D_SetImageTint(&tint, C2D_TopLeft, color, 0.5);
+	C2D_SetImageTint(&tint, C2D_TopRight, color, 0.5);
+	C2D_SetImageTint(&tint, C2D_BotLeft, color, 0.5);
+	C2D_SetImageTint(&tint, C2D_BotRight, color, 0.5);
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f, &tint);
 }
 
 // Initialize GUI.
 Result Gui::init(void)
 {
-    C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
-    C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
-    C2D_Prepare();
-    top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
-    bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
-    sizeBuf = C2D_TextBufNew(4096);
-    sprites    = C2D_SpriteSheetLoad("romfs:/gfx/sprites.t3x");
-    systemFont = C2D_FontLoadSystem(CFG_REGION_USA);
-    return 0;
+	C3D_Init(C3D_DEFAULT_CMDBUF_SIZE);
+	C2D_Init(C2D_DEFAULT_MAX_OBJECTS);
+	C2D_Prepare();
+	top = C2D_CreateScreenTarget(GFX_TOP, GFX_LEFT);
+	bottom = C2D_CreateScreenTarget(GFX_BOTTOM, GFX_LEFT);
+	sizeBuf = C2D_TextBufNew(4096);
+	sprites    = C2D_SpriteSheetLoad("romfs:/gfx/sprites.t3x");
+	systemFont = C2D_FontLoadSystem(CFG_REGION_USA);
+	return 0;
 }
 
 // Exit GUI.
 void Gui::exit(void)
 {
-    if (sprites)
-    {
-        C2D_SpriteSheetFree(sprites);
-    }
-    C2D_TextBufDelete(sizeBuf);
-    C2D_Fini();
-    C3D_Fini();
+	if (sprites)
+	{
+		C2D_SpriteSheetFree(sprites);
+	}
+	C2D_TextBufDelete(sizeBuf);
+	C2D_Fini();
+	C3D_Fini();
 }
 
 // Draw a normal Sprite from the Spritesheet.
 void Gui::sprite(int key, int x, int y)
 {
-    if (key == sprites_res_null_idx)
-    {
-        return;
-    }
-    // standard case
-    else
-    {
-        C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f);
-    }
+	if (key == sprites_res_null_idx)
+	{
+		return;
+	}
+	// standard case
+	else
+	{
+		C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, key), x, y, 0.5f);
+	}
 }
+
+void Gui::displayMsg(std::string Text) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top, BLACK);
+	C2D_TargetClear(bottom, BLACK);
+	Gui::ScreenDraw(top);
+	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
+	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
+	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
+	Gui::DrawString((400-Gui::GetStringWidth(0.72f, Text.c_str()))/2, 2, 0.72f, WHITE, Text.c_str());
+	Gui::ScreenDraw(bottom);
+	Gui::Draw_Rect(0, 0, 320, 30, GREEN);
+	Gui::Draw_Rect(0, 30, 320, 180, DARKGRAY);
+	Gui::Draw_Rect(0, 210, 320, 30, GREEN);
+	C3D_FrameEnd(0);
+}
+
 
 // Display a Message, which needs to be confirmed with A/B.
 bool Gui::promptMsg2(std::string promptMsg)
 {
-    Gui::clearTextBufs();
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, BLACK);
-    C2D_TargetClear(bottom, BLACK);
-    Gui::ScreenDraw(top);
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top, BLACK);
+	C2D_TargetClear(bottom, BLACK);
+	Gui::ScreenDraw(top);
 	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
-    Gui::DrawString((400-Gui::Draw_GetStringWidth(0.72f, promptMsg.c_str()))/2, 50, 0.72f, WHITE, promptMsg.c_str());
-    Gui::ScreenDraw(bottom);
+	Gui::DrawString((400-Gui::GetStringWidth(0.72f, promptMsg.c_str()))/2, 50, 0.72f, WHITE, promptMsg.c_str());
+	Gui::ScreenDraw(bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 320, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 320, 30, GREEN);
 	C3D_FrameEnd(0);
 
-    while(1)
-    {
+	while(1)
+	{
 		gspWaitForVBlank();
 		hidScanInput();
 		if(hidKeysDown() & KEY_A) {
@@ -125,7 +143,7 @@ bool Gui::promptMsg2(std::string promptMsg)
 		} else if(hidKeysDown() & KEY_B) {
 			return false;
 		}
-    }
+	}
 
 }
 
@@ -136,16 +154,16 @@ bool Gui::promptMsg(std::string msg) {
 // Displays a Message for 2 Seconds. Good for warnings like invalid Language.
 void Gui::DisplayWarnMsg(std::string Text)
 {
-    Gui::clearTextBufs();
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, BLACK);
-    C2D_TargetClear(bottom, BLACK);
-    Gui::ScreenDraw(top);
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top, BLACK);
+	C2D_TargetClear(bottom, BLACK);
+	Gui::ScreenDraw(top);
 	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
-    Gui::DrawString((400-Gui::Draw_GetStringWidth(0.72f, Text.c_str()))/2, 2, 0.72f, WHITE, Text.c_str());
-    Gui::ScreenDraw(bottom);
+	Gui::DrawString((400-Gui::GetStringWidth(0.72f, Text.c_str()))/2, 2, 0.72f, WHITE, Text.c_str());
+	Gui::ScreenDraw(bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 320, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 320, 30, GREEN);
@@ -158,60 +176,61 @@ void Gui::DisplayWarnMsg(std::string Text)
 // Display a Message, which can be skipped with A.
 void Gui::DisplayWaitMsg(std::string waitMsg, ...)
 {
-    Gui::clearTextBufs();
-    C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-    C2D_TargetClear(top, BLACK);
-    C2D_TargetClear(bottom, BLACK);
-    Gui::ScreenDraw(top);
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(top, BLACK);
+	C2D_TargetClear(bottom, BLACK);
+	Gui::ScreenDraw(top);
 	Gui::Draw_Rect(0, 0, 400, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 400, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 400, 30, GREEN);
-    //Gui::DrawString((400-Gui::Draw_GetStringWidth(0.72f, Lang::Continue))/2, 2, 0.72f, WHITE, Lang::Continue);
-    Gui::DrawString((400-Gui::Draw_GetStringWidth(0.72f, waitMsg.c_str()))/2, 50, 0.72f, WHITE, waitMsg.c_str());
-    Gui::ScreenDraw(bottom);
+	//Gui::DrawString((400-Gui::Draw_GetStringWidth(0.72f, Lang::Continue))/2, 2, 0.72f, WHITE, Lang::Continue);
+	Gui::DrawString((400-Gui::GetStringWidth(0.72f, waitMsg.c_str()))/2, 50, 0.72f, WHITE, waitMsg.c_str());
+	Gui::ScreenDraw(bottom);
 	Gui::Draw_Rect(0, 0, 320, 30, GREEN);
 	Gui::Draw_Rect(0, 30, 320, 180, DARKGRAY);
 	Gui::Draw_Rect(0, 210, 320, 30, GREEN);
 	C3D_FrameEnd(0);
 
 	while(1)
-    {
+	{
 		hidScanInput();
 		if(hidKeysDown() & KEY_A)
 			break;
-    }
+	}
 
 }
 
 // Draw String or Text.
-void Gui::DrawString(float x, float y, float size, u32 color, std::string Text)
+void Gui::DrawString(float x, float y, float size, u32 color, std::string Text, int maxWidth)
 {
 	C2D_Text c2d_text;
-    C2D_TextFontParse(&c2d_text, systemFont, sizeBuf, Text.c_str());
+	C2D_TextFontParse(&c2d_text, systemFont, sizeBuf, Text.c_str());
+
 	C2D_TextOptimize(&c2d_text);
-	C2D_DrawText(&c2d_text, C2D_WithColor, x, y, 0.5f, size, size, color);
+	C2D_DrawText(&c2d_text, C2D_WithColor, x, y, 0.5f, std::min(size, size*(maxWidth/Gui::GetStringWidth(size, Text))), size, color);
 }
 
 
 // Get String or Text Width.
-float Gui::Draw_GetStringWidth(float size, std::string Text) {
+float Gui::GetStringWidth(float size, std::string Text) {
 	float width = 0;
-	Draw_GetStringSize(size, &width, NULL, Text);
+	GetStringSize(size, &width, NULL, Text);
 	return width;
 }
 
 // Get String or Text Size.
-void Gui::Draw_GetStringSize(float size, float *width, float *height, std::string Text) {
+void Gui::GetStringSize(float size, float *width, float *height, std::string Text) {
 	C2D_Text c2d_text;
-    C2D_TextFontParse(&c2d_text, systemFont, sizeBuf, Text.c_str());
+	C2D_TextFontParse(&c2d_text, systemFont, sizeBuf, Text.c_str());
 	C2D_TextGetDimensions(&c2d_text, size, size, width, height);
 }
 
 
 // Get String or Text Height.
-float Gui::Draw_GetStringHeight(float size, std::string Text) {
+float Gui::GetStringHeight(float size, std::string Text) {
 	float height = 0;
-	Draw_GetStringSize(size, NULL, &height, Text.c_str());
+	GetStringSize(size, NULL, &height, Text.c_str());
 	return height;
 }
 
@@ -229,40 +248,40 @@ void Gui::mainLoop(u32 hDown, u32 hHeld, touchPosition touch) {
 // Set the current Screen.
 void Gui::setScreen(std::unique_ptr<SCREEN> screen)
 {
-    screens.push(std::move(screen));
+	screens.push(std::move(screen));
 }
 
 // Go a Screen back.
 void Gui::screenBack()
 {
-    screens.pop();
+	screens.pop();
 }
 
 // Select, on which Screen should be drawn.
 void Gui::ScreenDraw(C3D_RenderTarget * screen)
 {
-    C2D_SceneBegin(screen);
+	C2D_SceneBegin(screen);
 }
 
 // The animated Selector from LeafEdit.
 void Gui::drawAnimatedSelector(float xPos, float yPos, float Width, float Height, float speed, u32 colour)
 {
-    static constexpr int w     = 2;
-    static float timer         = 0.0f;
-    float highlight_multiplier = fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
-    u8 r                       = GREEN & 0xFF;
-    u8 g                       = (GREEN >> 8) & 0xFF;
-    u8 b                       = (GREEN >> 16) & 0xFF;
-    u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
+	static constexpr int w     = 2;
+	static float timer         = 0.0f;
+	float highlight_multiplier = fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
+	u8 r                       = GREEN & 0xFF;
+	u8 g                       = (GREEN >> 8) & 0xFF;
+	u8 b                       = (GREEN >> 16) & 0xFF;
+	u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
 
-    // BG Color for the Selector.
-    C2D_DrawRectSolid(xPos, yPos, 0.5, Width, Height, colour); // Black.
+	// BG Color for the Selector.
+	C2D_DrawRectSolid(xPos, yPos, 0.5, Width, Height, colour); // Black.
 
-    // Animated Selector part.
-    C2D_DrawRectSolid(xPos, yPos, 0.5, Width, w, color);                      // top
-    C2D_DrawRectSolid(xPos, yPos + w, 0.5, w, Height - 2 * w, color);          // left
-    C2D_DrawRectSolid(xPos + Width - w, yPos + w, 0.5, w, Height - 2 * w, color); // right
-    C2D_DrawRectSolid(xPos, yPos + Height - w, 0.5, Width, w, color);             // bottom
+	// Animated Selector part.
+	C2D_DrawRectSolid(xPos, yPos, 0.5, Width, w, color);                      // top
+	C2D_DrawRectSolid(xPos, yPos + w, 0.5, w, Height - 2 * w, color);          // left
+	C2D_DrawRectSolid(xPos + Width - w, yPos + w, 0.5, w, Height - 2 * w, color); // right
+	C2D_DrawRectSolid(xPos, yPos + Height - w, 0.5, Width, w, color);             // bottom
 
-    timer += speed; // Speed of the animation. Example : .030f / .030
+	timer += speed; // Speed of the animation. Example : .030f / .030
 }

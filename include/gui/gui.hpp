@@ -82,12 +82,13 @@ namespace Gui
     bool promptMsg2(std::string promptMsg);
     void DisplayWaitMsg(std::string waitMsg, ...);
     bool promptMsg(std::string msg);
+    void displayMsg(std::string Text);
 
     // Text / String Functions.
-    void DrawString(float x, float y, float size, u32 color, std::string Text);
-    void Draw_GetStringSize(float size, float *width, float *height, std::string Text);
-    float Draw_GetStringWidth(float size, std::string Text);
-    float Draw_GetStringHeight(float size, std::string Text);
+    void DrawString(float x, float y, float size, u32 color, std::string Text, int maxWidth = 400);
+    void GetStringSize(float size, float *width, float *height, std::string Text);
+    float GetStringWidth(float size, std::string Text);
+    float GetStringHeight(float size, std::string Text);
 
 
     // float xPos -> X Position of the Selector.

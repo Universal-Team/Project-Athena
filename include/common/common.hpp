@@ -1,8 +1,0 @@
-#ifndef COMMON_HPP
-#define COMMON_HPP
-
-// Title IDs for Testing.
-#define UNIVERSAL_MANAGER	0x0004000004394100
-#define LEAFEDIT			0x0004000004392100
-
-#endif

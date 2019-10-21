@@ -35,14 +35,17 @@ class MainMenu : public SCREEN
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-
+	MainMenu();
 private:
+	int mode = 2; // Mode for the current Selection stuff.
 	int selectedTitle = 0;
 	bool GameSelected   = false;
 
 	void DrawTitle(void) const;
 	void DrawDescription(void) const;
-	void SelectionLogic(u32 hDown);
+	void TitleSelectionLogic(u32 hDown);
+
+	int maxTitles;
 
 	std::shared_ptr<TitleLoader> titleFromIndex(int i) const
 	{

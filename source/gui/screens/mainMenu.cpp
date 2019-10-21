@@ -29,9 +29,16 @@
 #include "gui/screens/screenCommon.hpp"
 #include "gui/screens/mainMenu.hpp"
 
+#include <vector>
+
 extern bool exiting;
 extern int fadealpha;
 extern bool fadein;
+
+// Get the Max Amount of available Titles.
+MainMenu::MainMenu() {
+	maxTitles = (int)GameLoader::installedTitles.size();
+} 
 
 void MainMenu::Draw(void) const
 {
@@ -59,8 +66,8 @@ void MainMenu::Draw(void) const
 
 	// Icon & Metainfo like App name and Author.
 	Gui::sprite(sprites_icon_idx, 85, 36);
-	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, "Athena"))/2-120+50+95, 40, 0.5f, BLACK, "Athena");
-	Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, "Universal-Team"))/2-120+50+95, 60, 0.5f, BLACK, "Universal-Team");
+	Gui::DrawString((400-Gui::GetStringWidth(0.5f, "Athena"))/2-120+50+95, 40, 0.5f, BLACK, "Athena");
+	Gui::DrawString((400-Gui::GetStringWidth(0.5f, "Universal-Team"))/2-120+50+95, 60, 0.5f, BLACK, "Universal-Team");
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, fadealpha)); // Fade in/out effect
 
 	// Test animated Selector.
@@ -74,14 +81,14 @@ void MainMenu::Draw(void) const
 	Gui::Draw_Rect(0, 210, 320, 30, Chartreuse);
 
 	// Bottom Text Boxes.
-    Gui::Draw_Rect(0, 100, 320, 30, Pool);
-    Gui::Draw_Rect(0, 140, 320, 30, Pool);
+	Gui::Draw_Rect(0, 100, 320, 30, Pool);
+	Gui::Draw_Rect(0, 140, 320, 30, Pool);
 
 	// Path and Description and the Icon as well.
 	if (!GameLoader::installedTitles.empty()) {
 		C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle]->icon(), 245, 42, 0.5f); // Installed Title Icon.
 	}
-	//Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
+	//Gui::DrawString((320-Gui::GetStringWidth(0.50f, "Path: sdmc:/3ds/Project-Athena.3dsx"))/2, 107, 0.50f, BLACK, "Path: sdmc:/3ds/Project-Athena.3dsx");
 
 	if (!GameLoader::installedTitles.empty()) {
 		DrawDescription();
@@ -92,19 +99,36 @@ void MainMenu::Draw(void) const
 void MainMenu::DrawTitle(void) const {
 	if (!GameLoader::installedTitles.empty()) {
 		C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle]->icon(), 85, 96, 0.5f); // 48x48.
-		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->name());
-		Gui::DrawString((400-Gui::Draw_GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->Author());
+		Gui::DrawString((400-Gui::GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->name()))/2-120+50+95, 100, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->name(), 180);
+		Gui::DrawString((400-Gui::GetStringWidth(0.5f, GameLoader::installedTitles[selectedTitle]->Author()))/2-120+50+95, 120, 0.5f, BLACK, GameLoader::installedTitles[selectedTitle]->Author(), 180);
+	}
+
+	if (GameLoader::installedTitles.size() >= 3) {
+		if (selectedTitle != maxTitles -1) {
+			C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle + 1]->icon(), 370, 96, 0.5f, NULL, 0.5, 0.5);
+		} else {
+			C2D_DrawImageAt(GameLoader::installedTitles[0]->icon(), 370, 96, 0.5f, NULL, 0.5, 0.5);
+		}
+
+
+		if (selectedTitle != 0) {
+			C2D_DrawImageAt(GameLoader::installedTitles[selectedTitle - 1]->icon(), 1, 96, 0.5f, NULL, 0.5, 0.5);
+		} else {
+			C2D_DrawImageAt(GameLoader::installedTitles[maxTitles - 1]->icon(), 1, 96, 0.5f, NULL, 0.5, 0.5);
+		}
 	}
 }
 
 void MainMenu::DrawDescription(void) const {
 	if (!GameLoader::installedTitles.empty()) {
-		Gui::DrawString((320-Gui::Draw_GetStringWidth(0.50f, GameLoader::installedTitles[selectedTitle]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[selectedTitle]->longDescription());
+		Gui::DrawString((320-Gui::GetStringWidth(0.50f, GameLoader::installedTitles[selectedTitle]->longDescription()))/2, 147, 0.50f, BLACK, GameLoader::installedTitles[selectedTitle]->longDescription());
 	}
 }
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	SelectionLogic(hDown);
+	if (mode == 2) {
+		TitleSelectionLogic(hDown);
+	}
 
 	if (hDown & KEY_START) {
 		exiting = true;
@@ -120,7 +144,7 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
-void MainMenu::SelectionLogic(u32 hDown) {
+void MainMenu::TitleSelectionLogic(u32 hDown) {
 	if (selectedTitle == -2)
 	{
 		if (!GameLoader::installedTitles.empty())
@@ -130,17 +154,17 @@ void MainMenu::SelectionLogic(u32 hDown) {
 	}
 
 	// Scroll with D-Pad Right to the next available Title.
-	else if (hDown & KEY_RIGHT)
+	else if (hDown & KEY_RIGHT || hDown & KEY_R)
 	{
-		if (selectedTitle == (int)GameLoader::installedTitles.size() - 1 || selectedTitle == 7)
+		if (selectedTitle == (int)GameLoader::installedTitles.size() - 1 || selectedTitle == maxTitles - 1)
 		{
-			if (GameLoader::installedTitles.size() > 8 && selectedTitle > 7)
+			if (GameLoader::installedTitles.size() > maxTitles && selectedTitle > maxTitles - 1)
 			{
-				if (selectedTitle > 7)
+				if (selectedTitle > maxTitles - 1)
 				{
-					selectedTitle = 8;
+					selectedTitle = maxTitles;
 				}
-				else if (selectedTitle == 7)
+				else if (selectedTitle == maxTitles - 1)
 				{
 					selectedTitle = 0;
 				}
@@ -157,19 +181,19 @@ void MainMenu::SelectionLogic(u32 hDown) {
 	}
 
 	// Scroll with D-Pad Left to the next available Title.
-	else if (hDown & KEY_LEFT)
+	else if (hDown & KEY_LEFT || hDown & KEY_L)
 	{
 		if (selectedTitle == -1)
 		{
-			selectedTitle = GameLoader::installedTitles.size() < 8 ? GameLoader::installedTitles.size() - 1 : 7;
+			selectedTitle = GameLoader::installedTitles.size() < maxTitles ? GameLoader::installedTitles.size() - 1 : maxTitles - 1;
 		}
-		else if (selectedTitle == 8)
+		else if (selectedTitle == maxTitles)
 		{
 			selectedTitle = (int)GameLoader::installedTitles.size() - 1;
 		}
 		else if (selectedTitle == 0)
 		{
-			selectedTitle = GameLoader::installedTitles.size() > 8 ? 7 : (int)GameLoader::installedTitles.size() - 1;
+			selectedTitle = GameLoader::installedTitles.size() > maxTitles ? maxTitles - 1 : (int)GameLoader::installedTitles.size() - 1;
 		}
 		else
 		{

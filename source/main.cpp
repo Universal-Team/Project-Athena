@@ -24,29 +24,19 @@
 *         reasonable ways as different from the original version.
 */
 
-#include <citro3d.h>
-#include <citro2d.h>
-#include <3ds.h>
-#include <algorithm>
-#include <dirent.h>
-#include <malloc.h>
-#include <sstream>
-#include <stdio.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-#include "gui/gui.hpp"
-
 #include "common/structs.hpp"
 
-#include "gui/screens/screenCommon.hpp"
-
+#include "core/gameLoader.hpp"
+#include "gui/gui.hpp"
 #include "gui/keyboard.hpp"
 
 #include "gui/screens/mainMenu.hpp"
+#include "gui/screens/screenCommon.hpp"
 
-#include "gameLoader.hpp"
+#include <3ds.h>
+#include <citro3d.h>
+#include <citro2d.h>
+#include <dirent.h>
 
 // The classic Fade Effect! ;P
 int fadealpha = 255;
@@ -83,21 +73,23 @@ int main() {
 	mkdir("sdmc:/Athena", 0777);	// main Path.
 
 	// Scan for available Titles to display.
+	// Because it could take a while, depends how many titles are installed.
+	Gui::displayMsg("Searching for available 3DS Titles...");
 	GameLoader::scanTitleID();
-	
+
 	// Set the Screen to the MainMenu.
 	Gui::setScreen(std::make_unique<MainMenu>());
-	
+
 	// Loop as long as the status is not exit
-    while (aptMainLoop() && !exiting)
-    {
-        hidScanInput();
-        u32 hHeld = hidKeysHeld();
-        u32 hDown = hidKeysDown();
+	while (aptMainLoop() && !exiting)
+	{
+		hidScanInput();
+		u32 hHeld = hidKeysHeld();
+		u32 hDown = hidKeysDown();
 		hidTouchRead(&touch);
-        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-        C2D_TargetClear(top, BLACK);
-        C2D_TargetClear(bottom, BLACK);
+		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		C2D_TargetClear(top, BLACK);
+		C2D_TargetClear(bottom, BLACK);
 		Gui::clearTextBufs();
 		Gui::mainLoop(hDown, hHeld, touch);
 		C3D_FrameEnd(0);
@@ -119,5 +111,5 @@ int main() {
 	gfxExit();
 	romfsExit();
 
-    return 0;
+	return 0;
 }
