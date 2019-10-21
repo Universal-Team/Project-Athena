@@ -70,7 +70,7 @@ int main() {
 
 	// make folders if they don't exist
 	mkdir("sdmc:/3ds", 0777);	// For DSP dump
-	mkdir("sdmc:/Athena", 0777);	// main Path.
+	mkdir("sdmc:/Project-Athena", 0777);	// main Path.
 
 	// Scan for available Titles to display.
 	// Because it could take a while, depends how many titles are installed.

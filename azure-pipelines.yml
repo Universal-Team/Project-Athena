@@ -40,19 +40,19 @@ steps:
     cp Athena.cia $(Build.ArtifactStagingDirectory)
     echo '##vso[task.setvariable variable=COMMIT_TAG]'$(git log --format=%h -1)
     echo '##vso[task.setvariable variable=COMMIT_MESSAGE]'$(git log --pretty=format:"%an - %s" -1)
-  displayName: 'Build Athena'
+  displayName: 'Build Project-Athena'
 
 - script: |
     git config --global user.email "flamekat54@aol.com"
     git config --global user.name "TWLBot"
     git clone --depth 1 https://$GITHUB_TOKEN@github.com/Universal-Team/extras.git
-    mkdir extras/builds/Athena/
-    cd extras/builds/Athena/
-    cp ../../../Athena.3dsx Athena.3dsx
-    cp ../../../Athena.cia Athena.cia
-    qrencode -o Athena.png https://github.com/Universal-Team/extras/releases/download/v$CURRENT_DATE/LeafEdit.cia
+    mkdir extras/builds/Project-Athena/
+    cd extras/builds/Project-Athena/
+    cp ../../../Project-Athena.3dsx Project-Athena.3dsx
+    cp ../../../Project-Athena.cia Project-Athena.cia
+    qrencode -o Project-Athena.png https://github.com/Universal-Team/extras/releases/download/v$CURRENT_DATE/Project-Athena.cia
     git stage .
-    git commit -m "Athena | $(COMMIT_TAG)"
+    git commit -m "Project-Athena | $(COMMIT_TAG)"
     git push origin master
     git tag v$CURRENT_DATE
     echo '##vso[task.setvariable variable=TWLBOT_COMMIT]'$(git log -1 --format="%H")
@@ -67,7 +67,7 @@ steps:
     target: $(TWLBOT_COMMIT)
     tagSource: 'manual'
     tag: v$(CURRENT_DATE)
-    title: Athena | $(COMMIT_TAG)
+    title: Project-Athena | $(COMMIT_TAG)
     releaseNotesSource: input
     releaseNotes: $(COMMIT_MESSAGE)
     assets: '$(Build.ArtifactStagingDirectory)/*'
@@ -77,7 +77,7 @@ steps:
 - script: |
     curl -o send.sh https://raw.githubusercontent.com/Universal-Team/discord-webhooks/master/send-azure.sh
     chmod +x send.sh
-    export IMAGE=https://raw.githubusercontent.com/Universal-Team/extras/v$CURRENT_DATE/Universal-Manager/Athena.png
+    export IMAGE=https://raw.githubusercontent.com/Universal-Team/extras/v$CURRENT_DATE/Project-Athena/Project-Athena.png
     ./send.sh success $WEBHOOK_URL
   condition: succeeded()
   displayName: "Send success webhook"
