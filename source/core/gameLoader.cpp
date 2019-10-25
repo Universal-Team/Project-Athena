@@ -58,9 +58,14 @@ static bool isValidId(u64 id)
 			return false;
 	}
 
-	// check for updates
+	// Exclude Update Titles.
 	u32 high = id >> 32;
 	if (high == 0x0004000E) {
+		return false;
+	}
+	// Exclude Home Menu Themes and also DLC's? Homebrews and game Titles are smaller than 0x00040080.
+	// Basically exclude everything, which is larger than 0x00040080.
+	if (high >= 0x00040080) {
 		return false;
 	}
 
