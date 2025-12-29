@@ -64,7 +64,6 @@ int main() {
 	Gui::init();
 	acInit();
 	amInit();
-	sdmcInit();
 	cfguInit();
 	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users
 
@@ -104,7 +103,6 @@ int main() {
 	}
 	// Exit every process.
 	cfguExit();
-	sdmcExit();
 	acExit();
 	amExit();
 	Gui::exit();

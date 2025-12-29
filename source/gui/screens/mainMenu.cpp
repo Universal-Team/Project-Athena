@@ -166,7 +166,7 @@ void MainMenu::TitleSelectionLogic(u32 hDown) {
 	{
 		if (selectedTitle == (int)GameLoader::installedTitles.size() - 1 || selectedTitle == maxTitles - 1)
 		{
-			if (GameLoader::installedTitles.size() > maxTitles && selectedTitle > maxTitles - 1)
+			if ((int)GameLoader::installedTitles.size() > maxTitles && selectedTitle > maxTitles - 1)
 			{
 				if (selectedTitle > maxTitles - 1)
 				{
@@ -193,7 +193,7 @@ void MainMenu::TitleSelectionLogic(u32 hDown) {
 	{
 		if (selectedTitle == -1)
 		{
-			selectedTitle = GameLoader::installedTitles.size() < maxTitles ? GameLoader::installedTitles.size() - 1 : maxTitles - 1;
+			selectedTitle = (int)GameLoader::installedTitles.size() < maxTitles ? GameLoader::installedTitles.size() - 1 : maxTitles - 1;
 		}
 		else if (selectedTitle == maxTitles)
 		{
@@ -201,7 +201,7 @@ void MainMenu::TitleSelectionLogic(u32 hDown) {
 		}
 		else if (selectedTitle == 0)
 		{
-			selectedTitle = GameLoader::installedTitles.size() > maxTitles ? maxTitles - 1 : (int)GameLoader::installedTitles.size() - 1;
+			selectedTitle = (int)GameLoader::installedTitles.size() > maxTitles ? maxTitles - 1 : (int)GameLoader::installedTitles.size() - 1;
 		}
 		else
 		{
